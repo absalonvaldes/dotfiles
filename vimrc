@@ -1,27 +1,33 @@
-set nocompatible              " be iMproved, required
-filetype off                  " required
+set nocompatible
+filetype off
 
-" Plugin Manager
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
-Plugin 'gmarik/Vundle.vim'
-
-" Plugins
+"Plugin 'Townk/vim-autoclose'
+"Plugin 'elzr/vim-json'
+Plugin 'SirVer/ultisnips'
 Plugin 'StanAngeloff/php.vim'
-Plugin 'Townk/vim-autoclose'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'ap/vim-css-color'
 Plugin 'arnaud-lb/vim-php-namespace'
 Plugin 'bling/vim-airline'
+Plugin 'cakebaker/scss-syntax.vim'
+Plugin 'cespare/vim-toml'
+Plugin 'dantleech/vim-phpunit'
 Plugin 'digitaltoad/vim-jade.git'
 Plugin 'easymotion/vim-easymotion'
 Plugin 'ekalinin/Dockerfile.vim'
-Plugin 'elzr/vim-json'
+Plugin 'evanmiller/nginx-vim-syntax'
+Plugin 'evidens/vim-twig'
 Plugin 'flazz/vim-colorschemes'
+Plugin 'gmarik/Vundle.vim'
 Plugin 'godlygeek/tabular'
 Plugin 'groenewege/vim-less'
+Plugin 'hail2u/vim-css3-syntax'
+Plugin 'honza/vim-snippets'
 Plugin 'jelera/vim-javascript-syntax'
+Plugin 'jiangmiao/auto-pairs'
 Plugin 'jistr/vim-nerdtree-tabs'
 Plugin 'kchmck/vim-coffee-script'
 Plugin 'keith/tmux.vim'
@@ -34,11 +40,20 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/syntastic'
 Plugin 'sjl/gundo.vim'
 Plugin 'terryma/vim-multiple-cursors'
+Plugin 'tmatilai/vim-monit'
 Plugin 'tomasr/molokai'
 Plugin 'tpope/vim-fugitive'
 Plugin 'vim-scripts/c.vim'
 Plugin 'wavded/vim-stylus.git'
 Plugin 'wting/rust.vim'
+Plugin 'mattn/emmet-vim'
+Plugin 'shawncplus/phpcomplete.vim'
+Plugin 'tyru/open-browser.vim'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'ervandew/supertab'
+Plugin 'dsawardekar/wordpress.vim'
+Plugin 'tpope/vim-surround'
+Plugin 'spf13/piv'
 
 call vundle#end() " required
 filetype plugin indent on " load filetype plugins/indent settings
@@ -54,51 +69,21 @@ set fenc=utf-8 " UTF-8
 set formatlistpat=^\\s*\\(\\d\\\|[-*]\\)\\+[\\]:.)}\\t\ ]\\s* "and bullets, too
 set formatoptions+=n " Recognize numbered lists
 set history=9999 " big old history
-set mouse=a " use mouse everywhere
+set mouse+=a " use mouse everywhere
+if &term =~ '^screen'
+    " tmux knows the extended mouse mode
+    set ttymouse=xterm2
+endif
 set nocompatible " explicitly get out of vi-compatible mode
 set noerrorbells " don't make noise
 set nomore " Short nomore
 set syntax=on
 set timeoutlen=300 " super low delay (works for me)
 set viminfo+=! " Store upper-case registers in viminfo
-let NERDTreeIgnore=['\~$', '\.pyc', '\.swp$', '\.git', '\.hg', '\.svn',
-      \ '\.ropeproject', '\.o', '\.bzr', '\.ipynb_checkpoints$',
-      \ '__pycache__',
-      \ '\.egg$', '\.egg-info$', '\.tox$', '\.idea$', '\.sass-cache',
-      \ '\.env$', '\.env[0-9]$', '\.coverage$', '\.tmp$', '\.gitkeep$',
-      \ '\.coverage$', '\.webassets-cache$', '\.vagrant$', '\.DS_Store',
-      \ '\.env-pypy$']
-let g:vimfiler_ignore_pattern='\%(.ini\|.sys\|.bat\|.BAK\|.DAT\|.pyc\|.egg-info\)$\|'.
-  \ '^\%(.gitkeep\|.coverage\|.webassets-cache\|.vagrant\|)$\|'.
-  \ '^\%(.env\|.ebextensions\|.elasticbeanstalk\|Procfile\)$\|'.
-  \ '^\%(.git\|.tmp\|__pycache__\|.DS_Store\|.o\|.tox\|.idea\|.ropeproject\)$'
-set wildignore=*.o,*.obj,*~,*.pyc "stuff to ignore when tab completing
-set wildignore+=.env
-set wildignore+=.env[0-9]+
-set wildignore+=.env-pypy
-set wildignore+=.git,.gitkeep
-set wildignore+=.tmp
-set wildignore+=.coverage
-set wildignore+=*DS_Store*
-set wildignore+=.sass-cache/
-set wildignore+=__pycache__/
-set wildignore+=.webassets-cache/
-set wildignore+=vendor/rails/**
-set wildignore+=vendor/cache/**
-set wildignore+=*.gem
-set wildignore+=log/**
-set wildignore+=tmp/**
-set wildignore+=.tox/**
-set wildignore+=.idea/**
-set wildignore+=.vagrant/**
-set wildignore+=.coverage/**
-set wildignore+=*.egg,*.egg-info
-set wildignore+=*.png,*.jpg,*.gif
-set wildignore+=*.so,*.swp,*.zip,*/.Trash/**,*.pdf,*.dmg,*/Library/**,*/.rbenv/**
-set wildignore+=*/.nx/**,*.app
 
 " Vim UI
-colorscheme desert
+colorscheme sand
+set background=light
 set incsearch " highlight as you type you search phrase
 set laststatus=2 " show airline in single file mode
 set lazyredraw " do not redraw while running macros
@@ -114,17 +99,18 @@ set novisualbell " don't blink
 set number " turn on line numbers
 set report=0 " tell us when anything is changed via :...
 set ruler " Always show current positions along the bottom
-set scrolloff=10 " Keep 10 lines (top/bottom) for scope
+"set scrolloff=10 " Keep 10 lines (top/bottom) for scope
 set shortmess=aOstT " shortens messages to avoid 'press a key' prompt
 set showcmd " show the command being typed
 set showmatch " show matching brackets
-set sidescrolloff=10 " Keep 5 lines at the size
+"set sidescrolloff=10 " Keep 5 lines at the size
 set t_Co=256 " terminal color mode
 set colorcolumn=80 " highlight column 80
 set cursorline " highlight current line
-set background=dark
 set nocursorcolumn
 set title
+set ttyfast
+set completeopt-=preview
 highlight Normal guibg=black guifg=white
 highlight ColorColumn ctermbg=235 guibg=#222222
 highlight CursorLine term=none cterm=none guibg=#303000 ctermbg=234
@@ -152,15 +138,22 @@ map <up> <nop>
 map <down> <nop>
 map <left> <nop>
 map <right> <nop>
+nnoremap Q <Nop>
 cmap w!! w !sudo tee % >/dev/null
 map <Leader> <Plug>(easymotion-prefix)
 map <Leader>j <Plug>(easymotion-j)
 map <Leader>k <Plug>(easymotion-k)
 nmap s <Plug>(easymotion-s)
 nnoremap <silent><leader>r :set relativenumber!<cr>
+nnoremap <silent><leader>pp :call GeneratePhpunit()<CR>
+nmap <silent> <c-k> :wincmd k<CR>
+nmap <silent> <c-j> :wincmd j<CR>
+nmap <silent> <c-h> :wincmd h<CR>
+nmap <silent> <c-l> :wincmd l<CR>
+nmap <silent> <leader>sv :so $MYVIMRC<CR>
+nmap <silent> <leader>ev :e $MYVIMRC<CR>
 
 " Plugins
-let g:multi_cursor_start_key='<C-g>'
 let g:NERDTreeMinimalUI = 1
 let g:NERDTreeWinSize = 25
 let g:airline_powerline_fonts = 0
@@ -171,44 +164,56 @@ let g:airline#extensions#tabline#enabled = 1
 if !exists('g:airline_symbols')
     let g:airline_symbols = {}
 endif
-let g:airline_symbols.branch = ''
-let g:airline_symbols.linenr = ''
-let g:airline_symbols.whitespace = ''
-let g:gitgutter_realtime = 0
-let g:gitgutter_eager = 0
-let g:gundo_help = 0
 let g:EasyMotion_do_mapping = 0
 let g:tagbar_compact = 1
+let g:ctrlp_working_path_mode = 0
 let g:multi_cursor_start_key='<C-n>'
+let g:syntastic_cpp_checkers = ['gcc']
+let g:syntastic_cpp_compiler = 'gcc'
+let g:syntastic_cpp_compiler_options = '-std=c++14'
+let g:syntastic_cpp_check_header = 0
+let g:phpunit_namespace_prefix="Tests"
+let g:user_emmet_mode='a'
+let g:user_emmet_leader_key='<C-Z>'
+let g:ycm_key_list_select_completion = []
+let g:ycm_key_list_previous_completion = []
+let g:SuperTabDefaultCompletionType = '<C-n>'
+let g:UltiSnipsExpandTrigger='<tab>'
+let g:UltiSnipsJumpForwardTrigger='<tab>'
+let g:UltiSnipsJumpBackwardTrigger='<s-tab>'
+let g:DisableAutoPHPFolding = 1
 
 " Autocommands
 au! BufRead,BufNewFile *.hbs,*.handlebars setf handlebars
-autocmd BufWritePre * :%s/\s\+$//e
+au! BufWritePre * :%s/\s\+$//e
 au! BufRead,BufNewFile *.js setf javascript
+au! BufRead,BufNewFile *.snippet setf snippet
 au! BufRead,BufNewFile *.json setf json
+au! BufRead,BufNewFile Vagrantfile setf ruby
+au! BufRead,BufNewFile *.twig set filetype=jinja
+au! BufRead,BufNewFile *.html.twig set filetype=jinja
+au! Filetype *.yml,*.yaml,*.jade set autoindent
+au! Filetype *.yml,*.yaml,*.jade setlocal ts=2 sts=2 sw=2
+au! FileType make setlocal noexpandtab
+au! FileType php set omnifunc=phpcomplete#CompletePHP
+au BufRead,BufNewFile *.scss set filetype=scss.css
+au FileType scss set iskeyword+=-
+au CompleteDone * pclose " close omnifuc preview
 
-" json stuff
-augroup json_autocmd
-    autocmd!
-    autocmd FileType json set autoindent
-    autocmd FileType json set textwidth=78 shiftwidth=4
-    autocmd FileType json set softtabstop=4 tabstop=4
-    autocmd FileType json set expandtab
-augroup END
 
-augroup yaml_autocmd
-    autocmd!
-    autocmd FileType yaml set autoindent
-    autocmd FileType yaml set softtabstop=2 tabstop=2
-augroup END
+syn keyword cmake_function externalproject_add
+hi def link cmake_function PreProc
 
-" php stuff
-function! PhpSyntaxOverride()
-    hi! def link phpDocTags  phpDefine
-    hi! def link phpDocParam phpType
+function! s:strip(input_string)
+    return substitute(substitute(a:input_string, '^\s*\(.\{-}\)\s*\n+$', '\1', ''), '\n\+$', '', '')
 endfunction
 
-augroup phpSyntaxOverride
-    autocmd!
-    autocmd FileType php call PhpSyntaxOverride()
-augroup END
+let g:git_author = s:strip(system('git config --global user.name'))
+let g:git_email  = s:strip(system('git config --global user.email'))
+
+let g:snips_author = g:git_author.' <'.g:git_email.'>'
+let g:author       = g:git_author
+let g:snips_email  = g:git_email
+let g:email        = g:git_email
+let g:snips_github = 'https://github.com/absalonvaldes'
+let g:github       = 'https://github.com/absalonvaldes'

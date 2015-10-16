@@ -8,8 +8,8 @@ bind r source-file ~/.tmux.conf \; display "Reloaded!"
 set -g default-terminal "screen-256color"
 set-option -g default-shell /usr/bin/zsh
 set -g history-limit 10000
-bind . split-window -h
-bind - split-window -v
+bind . split-window -h -c "#{pane_current_path}"
+bind - split-window -v -c "#{pane_current_path}"
 setw -g mode-mouse on
 set -g mouse-select-pane on
 set -g mouse-resize-pane on
@@ -25,6 +25,7 @@ set -g status-utf8 "on"
 set -g status-right-length "100"
 set -g status-left-length "100"
 set  -g set-titles on
+set-option -g allow-rename off
 set  -g set-titles-string '#S@#H'
 set  -g renumber-windows on
 setw -g window-status-fg "colour138"
